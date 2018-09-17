@@ -13,7 +13,18 @@ const url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData
 const chart = async () => {
   let getData = await fetch(url)
   let dataset = await getData.json()
-  console.log(dataset)
+  console.log(dataset[0].Doping.length)
+  let dopingAllegations = dataset.filter(d => d.Doping.length > 0)
+  let noDopingAllegations = dataset.filter(d => d.Doping.length == 0)
+  console.log(`dopingAllegations : `, dopingAllegations)
+  console.log(`noDopingAllegations : `, noDopingAllegations)
+
+  // create svg and append to chart div
+  var svg = d3.select('#chart')
+    .append('svg')
+    .attr('class', 'graph')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
 }
 
 chart()
