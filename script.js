@@ -21,20 +21,22 @@ const chart = async () => {
       Nationality: d.Nationality, 
       Place: d.Place, 
       Seconds: d.Seconds, 
-      Time: new Date('1970-01-01T' + '00:' + d.Time + 'Z'), 
+      Time: d.Time, 
       URL: d.URL, 
       Year: d.Year,
       dopeAllegation: d.Doping.length > 0
     }
   })
   console.log(`dataset: `, dataset)
+  console.log(`dataset: (no dope) `, dataset.filter(d => !d.dopeAllegation))
+  var noDope = dataset.filter(d => !d.dopeAllegation)
   // Format the data
   // Year
   const minYear = new Date(d3.min(dataset.map(d => d.Year)))
   const maxYear = new Date(d3.max(dataset.map(d => d.Year)))
 
-  const minTime = d3.min(dataset.map(d => d.Time))
-  const maxTime = d3.max(dataset.map(d => d.Time))
+  const minSeconds = d3.min(dataset.map(d => d.Seconds))
+  const maxSeconds = d3.max(dataset.map(d => d.Seconds))
 
   // Set the ranges
   const xScale = d3.scaleTime()
@@ -42,7 +44,7 @@ const chart = async () => {
     .range([padding, width - padding])
 
   const yScale = d3.scaleTime()
-    .domain([minTime, maxTime])
+    .domain([minSeconds, maxSeconds])
     .range([padding, height - padding])
 
   // create svg and append to chart div
@@ -63,8 +65,9 @@ const chart = async () => {
     .enter()
     .append("circle")
     .attr("cx", (d) => xScale(d.Year))
-    .attr("cy", (d) => yScale(d.Time))
-    .attr("r", 5)
+    .attr("cy", (d) => yScale(d.Seconds))
+    .attr("r", 8)
+    .style('fill', (d) => d.dopeAllegation ? 'white' : 'green')
 }
 
 chart()
