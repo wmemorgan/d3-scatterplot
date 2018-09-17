@@ -23,29 +23,31 @@ const chart = async () => {
       Seconds: d.Seconds, 
       Time: d.Time, 
       URL: d.URL, 
-      Year: d.Year,
+      Year: new Date(Date.parse(d.Year)),
       dopeAllegation: d.Doping.length > 0
     }
   })
   console.log(`dataset: `, dataset)
-  console.log(`dataset: (no dope) `, dataset.filter(d => !d.dopeAllegation))
   var noDope = dataset.filter(d => !d.dopeAllegation)
+  console.log(`dataset: (no dope) `, noDope)
   // Format the data
   // Year
-  const minYear = new Date(d3.min(dataset.map(d => d.Year)))
-  const maxYear = new Date(d3.max(dataset.map(d => d.Year)))
+  // const minYear = d3.min(dataset.map(d => d.Year))
+  // console.log(`minYear: ${minYear}`)
+  // const maxYear = d3.max(dataset.map(d => d.Year))
+  // console.log(`maxYear: ${maxYear}`)
 
   const minSeconds = d3.min(dataset.map(d => d.Seconds))
   const maxSeconds = d3.max(dataset.map(d => d.Seconds))
 
   // Set the ranges
   const xScale = d3.scaleTime()
-    .domain([minYear, maxYear])
-    .range([padding, width - padding])
+  .domain(d3.extent(dataset, (d) => d.Year ))
+  .range([padding, width+padding])
 
   const yScale = d3.scaleTime()
     .domain([minSeconds, maxSeconds])
-    .range([padding, height - padding])
+    .range([padding, (height+padding)])
 
   // create svg and append to chart div
   var svg = d3.select('#chart')
@@ -53,6 +55,22 @@ const chart = async () => {
     .attr('class', 'graph')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
+
+  // add the x Axis 
+  const xAxis = d3.axisBottom(xScale)
+
+  const yAxis = d3.axisLeft(yScale)
+    .tickFormat(d3.scaleTime().tickFormat(10, "%M:%S"));
+
+  svg.append('g')
+    .call(xAxis)
+    .attr('id', 'x-axis')
+    .attr('transform', `translate(0, ${height})`)
+
+  // add the y Axis
+  svg.append('g')
+    .call(yAxis)
+    .attr('id', 'y-axis')
   
   svg.append('text')
     .text('Doping in Professional Bicycle Racing')
@@ -64,10 +82,13 @@ const chart = async () => {
     .data(dataset)
     .enter()
     .append("circle")
+    .attr('data-xvalue', (d) => d.Year)
+    .attr('data-yvalue', (d) => d.Seconds)
     .attr("cx", (d) => xScale(d.Year))
     .attr("cy", (d) => yScale(d.Seconds))
     .attr("r", 8)
-    .style('fill', (d) => d.dopeAllegation ? 'white' : 'green')
+    .attr('class', 'dot')
+    .style('fill', (d) => d.dopeAllegation ? 'red' : 'green')
 }
 
 chart()
