@@ -23,16 +23,11 @@ const chart = async () => {
       Seconds: d.Seconds, 
       Time: new Date('1970-01-01T' + '00:' + d.Time + 'Z'), 
       URL: d.URL, 
-      Year: d.Year
+      Year: d.Year,
+      dopeAllegation: d.Doping.length > 0
     }
   })
-  console.log(`Dataset: `, dataset)
-  console.log(dataset[0].Doping.length)
-  let dopingAllegations = dataset.filter(d => d.Doping.length > 0)
-  let noDopingAllegations = dataset.filter(d => d.Doping.length == 0)
-  console.log(`dopingAllegations : `, dopingAllegations)
-  console.log(`noDopingAllegations : `, noDopingAllegations)
-
+  console.log(`dataset: `, dataset)
   // Format the data
   // Year
   const minYear = new Date(d3.min(dataset.map(d => d.Year)))
