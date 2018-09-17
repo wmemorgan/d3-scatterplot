@@ -57,9 +57,11 @@ const chart = async () => {
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
   
-  var title = d3.select('#chart').append('h2')
+  svg.append('text')
     .text('Doping in Professional Bicycle Racing')
-    .attr('id', 'title')  
+    .attr('id', 'title')
+    .attr("x", width / 2)
+    .attr("y", padding / 2)  
 
   svg.selectAll("circle")
     .data(dataset)
