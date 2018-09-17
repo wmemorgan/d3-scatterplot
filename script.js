@@ -8,3 +8,12 @@ var padding = 0
 var width = 800
 var height = 400
 
+// Get the data
+const url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json'
+const chart = async () => {
+  let getData = await fetch(url)
+  let dataset = await getData.json()
+  console.log(dataset)
+}
+
+chart()
