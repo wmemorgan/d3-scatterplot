@@ -2,7 +2,7 @@
 
 // Set the margin and padding of the SVG
 var margin = { top: 50, right: 20, bottom: 50, left: 100 }
-var padding = 0
+var padding = 50
 
 // Set the width and height using the current width and height of the div
 var width = 800
@@ -33,12 +33,41 @@ const chart = async () => {
   console.log(`dopingAllegations : `, dopingAllegations)
   console.log(`noDopingAllegations : `, noDopingAllegations)
 
+  // Format the data
+  // Year
+  const minYear = new Date(d3.min(dataset.map(d => d.Year)))
+  const maxYear = new Date(d3.max(dataset.map(d => d.Year)))
+
+  const minTime = d3.min(dataset.map(d => d.Time))
+  const maxTime = d3.max(dataset.map(d => d.Time))
+
+  // Set the ranges
+  const xScale = d3.scaleTime()
+    .domain([minYear, maxYear])
+    .range([padding, width - padding])
+
+  const yScale = d3.scaleTime()
+    .domain([minTime, maxTime])
+    .range([padding, height - padding])
+
   // create svg and append to chart div
   var svg = d3.select('#chart')
     .append('svg')
     .attr('class', 'graph')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
+  
+  var title = d3.select('#chart').append('h2')
+    .text('Doping in Professional Bicycle Racing')
+    .attr('id', 'title')  
+
+  svg.selectAll("circle")
+    .data(dataset)
+    .enter()
+    .append("circle")
+    .attr("cx", (d) => xScale(d.Year))
+    .attr("cy", (d) => yScale(d.Time))
+    .attr("r", 5)
 }
 
 chart()
