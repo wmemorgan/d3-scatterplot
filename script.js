@@ -12,7 +12,21 @@ var height = 400
 const url = 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json'
 const chart = async () => {
   let getData = await fetch(url)
-  let dataset = await getData.json()
+  let rawData = await getData.json()
+  console.log(`rawData: `, rawData)
+  let dataset = rawData.map(d => {
+    return {
+      Doping: d.Doping, 
+      Name: d.Name, 
+      Nationality: d.Nationality, 
+      Place: d.Place, 
+      Seconds: d.Seconds, 
+      Time: new Date('1970-01-01T' + '00:' + d.Time + 'Z'), 
+      URL: d.URL, 
+      Year: d.Year
+    }
+  })
+  console.log(`Dataset: `, dataset)
   console.log(dataset[0].Doping.length)
   let dopingAllegations = dataset.filter(d => d.Doping.length > 0)
   let noDopingAllegations = dataset.filter(d => d.Doping.length == 0)
