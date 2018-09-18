@@ -55,7 +55,7 @@ const chart = async () => {
     .range([padding, (height - padding)])
 
   // create svg and append to chart div
-  const svg = d3.select('#chart')
+  var svg = d3.select('#chart')
     .append('svg')
     .attr('class', 'graph')
     .attr('width', width + margin.left + margin.right)
@@ -74,13 +74,13 @@ const chart = async () => {
     .attr('transform', 'rotate(-90)')
     .attr('x', -250)
     .attr('y', 5)
-    .attr('class', 'labels')
+    // .attr('class', 'labels')
     .text('Time in Minutes')
 
   svg.append('text')
     .attr('x', width / 2)
     .attr('y', height)
-    .attr('class', 'labels')
+    // .attr('class', 'labels')
     .text('Year')
 
   // tooltip  
@@ -149,8 +149,8 @@ const chart = async () => {
     .attr("cx", (d) => xScale(d.Year))
     .attr("cy", (d) => yScale(d.Seconds))
     .attr("r", 8)
-    .attr('class', 'dot')
     .attr('class', (d) => d.Doping.length > 0 ? 'doping' : 'not-doping')
+    .classed('dot', true)
     .on('mouseover', (d) => {
       tooltip.transition().duration(200).style('opacity', 0.9)
       tooltip.html(
