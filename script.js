@@ -71,6 +71,7 @@ const chart = async () => {
   svg.append('g')
     .call(yAxis)
     .attr('id', 'y-axis')
+    .attr('transform', `translate(${padding}, 0)`)
   
   svg.append('text')
     .text('Doping in Professional Bicycle Racing')
