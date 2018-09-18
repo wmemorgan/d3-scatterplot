@@ -160,7 +160,6 @@ const chart = async () => {
         .attr('data-year', d.Year)
         .style('left', `${d3.event.layerX}px`)
         .style('top', `${d3.event.layerY - 28}px`)
-
     })
     .on('mouseout', () => tooltip.transition().duration(500).style('opacity', 0))
 

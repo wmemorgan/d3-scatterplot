@@ -54,10 +54,8 @@ body {
 #tooltip {
   position: absolute;
   text-align: left;
-  width: 275px;
-  height: 100px;
+  max-width: 200px;
   padding: 0.1rem 0.5rem;
-  /* padding-top: 0; */
   font-size: 0.7rem;
   background: var(--tooltip-background-color);
   pointer-events: none;
