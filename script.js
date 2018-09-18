@@ -52,10 +52,6 @@ const chart = async () => {
     .domain([minSeconds, maxSeconds])
     .range([padding, (height - padding)])
 
-  // const yAxisScale = d3.scaleTime()
-  //   .domain([minSeconds * 1000, maxSeconds * 1000])
-  //   .range([padding, (height - padding)])
-
   // Create svg and append to chart div
   var svg = d3.select('#chart')
     .append('svg')
