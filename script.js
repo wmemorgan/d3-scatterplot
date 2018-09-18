@@ -61,6 +61,11 @@ const chart = async () => {
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
 
+  // add labels  
+  var tooltip = d3.select('#chart').append('div')
+    .attr('id', 'tooltip')
+    .style('opacity', 0)
+
   // add the x Axis 
   const xAxis = d3.axisBottom(xScale)
     .tickFormat(d3.format("d"))
@@ -96,6 +101,18 @@ const chart = async () => {
     .attr("r", 8)
     .attr('class', 'dot')
     .style('fill', (d) => d.Doping.length > 0 ? 'red' : 'green')
+    .on('mouseover', (d) => {
+      tooltip.transition().duration(200).style('opacity', 0.9)
+      tooltip.html(
+        `<p>${d.Name}: ${d.Nationality}<br>
+         Year: ${d.Year} Time ${d.Time}</p>
+         <p><span>${d.Doping}</span></p>`)
+        .attr('data-year', d.Year)
+        .style('left', `${d3.event.layerX}px`)
+        .style('top', `${d3.event.layerY - 28}px`)
+
+    })
+    .on('mouseout', () => tooltip.transition().duration(500).style('opacity', 0))
 }
 
 chart()

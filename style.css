@@ -7,7 +7,7 @@
 --axis-color: #000;
 --bar-standard-color: #265077;
 --bar-selected-color: #51a7f8;
---tooltip-background-color: #B0C4DE;
+--tooltip-background-color: #93bcf1;
 --default-background-color: #022140;
 --overlay-bg-color:  #FCFCFC;
 --container-bg-color: #C5CAE9;
@@ -43,14 +43,15 @@ body {
 
 #tooltip {
   position: absolute;
-  text-align: center;
-  width: 100px;
-  height: 50px;
-  padding: 1rem;
-  padding-top: 0;
-  font-size: 0.75rem;
+  text-align: left;
+  width: 275px;
+  height: 100px;
+  padding: 0.1rem 0.5rem;
+  /* padding-top: 0; */
+  font-size: 0.7rem;
   background: var(--tooltip-background-color);
   pointer-events: none;
+  border-radius: 25px;
 }
 
 span {
