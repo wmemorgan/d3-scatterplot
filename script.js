@@ -42,12 +42,12 @@ const chart = async () => {
 
   // Set the ranges
   const xScale = d3.scaleTime()
-  .domain(d3.extent(dataset, (d) => d.Year ))
-  .range([padding, width+padding])
+  .domain(d3.extent(dataset, (d) => d.Year))
+  .range([padding, width-padding])
 
   const yScale = d3.scaleTime()
     .domain([minSeconds, maxSeconds])
-    .range([padding, (height+padding)])
+    .range([padding, (height-padding)])
 
   // create svg and append to chart div
   var svg = d3.select('#chart')
