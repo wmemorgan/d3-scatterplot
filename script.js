@@ -35,7 +35,7 @@ const chart = async () => {
   // Year
   const minYear = d3.min(dataset.map(d => d.Year - 1))
   console.log(`minYear: ${minYear}`)
-  const maxYear = d3.max(dataset.map(d => d.Year))
+  const maxYear = d3.max(dataset.map(d => d.Year + 1))
   console.log(`maxYear: ${maxYear}`)
 
   const minSeconds = d3.min(dataset.map(d => d.Seconds))
@@ -55,40 +55,90 @@ const chart = async () => {
     .range([padding, (height - padding)])
 
   // create svg and append to chart div
-  var svg = d3.select('#chart')
+  const svg = d3.select('#chart')
     .append('svg')
     .attr('class', 'graph')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
 
-  // add labels  
-  var tooltip = d3.select('#chart').append('div')
+  // add labels 
+  // title
+  svg.append('text')
+    .text('Doping in Professional Bicycle Racing')
+    .attr('id', 'title')
+    .attr("x", width / 2)
+    .attr("y", padding / 2) 
+  
+  // axis labels
+  svg.append('text')
+    .attr('transform', 'rotate(-90)')
+    .attr('x', -250)
+    .attr('y', 5)
+    .attr('class', 'labels')
+    .text('Time in Minutes')
+
+  svg.append('text')
+    .attr('x', width / 2)
+    .attr('y', height)
+    .attr('class', 'labels')
+    .text('Year')
+
+  // tooltip  
+  const tooltip = d3.select('#chart').append('div')
     .attr('id', 'tooltip')
     .style('opacity', 0)
+
+ // legend code inspired by Hooria Hic
+ // https://codepen.io/HIC/full/NLLmPp/
+  const legend = svg.append('g')
+    .attr('id', 'legend')
+    .attr("transform", `translate(${width - padding*3}, ${padding*3})`)
+
+  const legendData = [
+    { class: "doping", text: "Riders with doping allegations" },
+    { class: "not-doping", text: "No doping allegations" }
+  ];
+
+  legend.selectAll("rect")
+    .exit()
+    .data(legendData)
+    .enter()
+    .append("rect")
+    .attr("x", "0.25em")
+    .attr("y", (d, i) => `${0.25 + i * 1.5}em`)
+    .attr("width", "1em")
+    .attr("height", "1em")
+    .attr('class', (d) => d.class)
+
+  legend.selectAll("text")
+    .exit()
+    .data(legendData)
+    .enter()
+    .append("text")
+    .attr("x", "1.5em")
+    .attr("y", (d, i) => `${1.1 + i * 1.5}em`)
+    .attr("font-size", "1em")
+    .text(d => d.text);
 
   // add the x Axis 
   const xAxis = d3.axisBottom(xScale)
     .tickFormat(d3.format("d"))
 
   const yAxis = d3.axisLeft(yAxisScale)
-    .tickFormat(d3.scaleTime().tickFormat(10, "%M:%S"));
+    .tickFormat(d3.scaleTime().tickFormat(10, "%M:%S"))
 
   svg.append('g')
     .call(xAxis)
     .attr('id', 'x-axis')
+    .attr('class', 'axis')
     .attr('transform', `translate(0, ${height - padding})`)
 
   // add the y Axis
   svg.append('g')
     .call(yAxis)
     .attr('id', 'y-axis')
+    .attr('class', 'axis')
     .attr('transform', `translate(${padding}, 0)`)
-  
-  svg.append('text')
-    .text('Doping in Professional Bicycle Racing')
-    .attr('id', 'title')
-    .attr("x", width / 2)
-    .attr("y", padding / 2)  
 
   svg.selectAll("circle")
     .data(dataset)
@@ -100,7 +150,7 @@ const chart = async () => {
     .attr("cy", (d) => yScale(d.Seconds))
     .attr("r", 8)
     .attr('class', 'dot')
-    .style('fill', (d) => d.Doping.length > 0 ? 'red' : 'green')
+    .attr('class', (d) => d.Doping.length > 0 ? 'doping' : 'not-doping')
     .on('mouseover', (d) => {
       tooltip.transition().duration(200).style('opacity', 0.9)
       tooltip.html(
@@ -113,6 +163,8 @@ const chart = async () => {
 
     })
     .on('mouseout', () => tooltip.transition().duration(500).style('opacity', 0))
+
+
 }
 
 chart()

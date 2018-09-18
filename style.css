@@ -16,7 +16,9 @@
 
 body {
   font-family: Lato, sans-serif;
-   background: var(--default-background-color);
+  background: var(--default-background-color);
+  height: auto;
+
 }
 
 #title {
@@ -29,16 +31,24 @@ body {
 #chart {
   width: 80%;
   margin: 0 auto;
+  padding: 0;
   border: 1px solid black;
   text-align: center;
   background: var(--overlay-bg-color);
-  
-
 }
 
 .graph{
   margin: 0 auto;
+  padding: 1rem;
   background: var(--container-bg-color);
+}
+
+.doping {
+  fill: red;
+}
+
+.not-doping {
+  fill: green;
 }
 
 #tooltip {
