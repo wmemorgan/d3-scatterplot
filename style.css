@@ -40,7 +40,6 @@ body {
 .graph{
   margin: 0 auto;
   padding: 1rem;
-  background: var(--container-bg-color);
 }
 
 .doping {
